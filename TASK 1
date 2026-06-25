@@ -1,7 +1,102 @@
-echo "# All-TASK-" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/SahilNikalje95/All-TASK-.git
-git push -u origin main
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv(r'C:\Users\LOQ\Downloads\worldpopulationdata.csv')
+
+year_to_plot = '2022' 
+country_col = 'Country Name'
+
+# Clean the data: Remove any rows where the population data for our chosen year is missing.
+df_clean = df.dropna(subset=[year_to_plot])
+
+# CHART 1: HISTOGRAM (Continuous Variable)
+# Showing the distribution of country populations
+
+plt.figure(figsize=(10, 6)) 
+plt.hist(df_clean[year_to_plot], bins=30, color='skyblue', edgecolor='black')
+
+plt.title(f'Distribution of Country Populations ({year_to_plot})')
+plt.xlabel('Population (Millions)')
+plt.ylabel('Number of Countries')
+
+#first chart
+plt.show()
+
+# CHART 2: BAR CHART (Categorical Variable)
+
+# Showing the Top 10 most populated countries
+
+# setting it in decending format from highest to lowest data.
+top_10_countries = df_clean.sort_values(by=year_to_plot, ascending=False).head(10)
+
+plt.figure(figsize=(12, 6))
+plt.bar(top_10_countries[country_col], top_10_countries[year_to_plot], color='coral')
+
+plt.title(f'Top 10 Most Populated Countries ({year_to_plot})')
+plt.xlabel('Country')
+plt.ylabel('Population (Millions)')
+
+# NOTE: If this country name given on X axix does overlap the use below code to rotate this names.
+# Rotate the country names by 45 degrees so they don't overlap
+# plt.xticks(rotation=45) 
+
+# Display the second chart
+plt.show()
+
+
+# For all country data . code i given below 
+
+# 2. CRITICAL FILTER: Keep ONLY the total population rows
+# This prevents mixing population counts with percentage rows (like male/female %)
+df_population = df[df['Series Code'] == 'SP.POP.TOTL'].copy()
+
+year_to_plot = '2022'
+country_col = 'Country Name'
+
+# 3. Clean the data
+# Convert the population column to numbers and drop missing rows
+df_population[year_to_plot] = pd.to_numeric(df_population[year_to_plot], errors='coerce')
+df_clean = df_population.dropna(subset=[year_to_plot]).copy()
+
+# Sort countries from smallest to largest population so the bar chart looks organized
+df_clean = df_clean.sort_values(by=year_to_plot, ascending=True)
+
+# ==========================================
+# CHART 1: HISTOGRAM (All Countries)
+# ==========================================
+plt.figure(figsize=(10, 6))
+
+# Plots how many countries fall into specific population size buckets
+plt.hist(df_clean[year_to_plot], bins=35, color='skyblue', edgecolor='black')
+
+plt.title(f'Population Distribution Across All Countries ({year_to_plot})')
+plt.xlabel('Population Size (Millions)')
+plt.ylabel('Number of Countries')
+plt.grid(axis='y', alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+
+# ==========================================
+# CHART 2: BAR CHART (All Countries)
+# ==========================================
+# We make the figure very tall (height=40) so all 200+ country labels fit comfortably
+plt.figure(figsize=(12, 40)) 
+
+# 'barh' creates horizontal bars: Y-axis is country names, X-axis is population
+plt.barh(df_clean[country_col], df_clean[year_to_plot], color='coral')
+
+plt.title(f'Population of All Countries ({year_to_plot})', fontsize=16)
+plt.xlabel('Total Population (Millions)')
+plt.ylabel('Country Name')
+
+# Shrink the text size slightly so names do not overlap on the side
+plt.yticks(fontsize=8) 
+plt.grid(axis='x', alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+
