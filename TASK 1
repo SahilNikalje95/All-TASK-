@@ -62,9 +62,9 @@ df_clean = df_population.dropna(subset=[year_to_plot]).copy()
 # Sort countries from smallest to largest population so the bar chart looks organized
 df_clean = df_clean.sort_values(by=year_to_plot, ascending=True)
 
-# ==========================================
+
 # CHART 1: HISTOGRAM (All Countries)
-# ==========================================
+
 plt.figure(figsize=(10, 6))
 
 # Plots how many countries fall into specific population size buckets
@@ -78,10 +78,8 @@ plt.grid(axis='y', alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-
-# ==========================================
 # CHART 2: BAR CHART (All Countries)
-# ==========================================
+
 # We make the figure very tall (height=40) so all 200+ country labels fit comfortably
 plt.figure(figsize=(12, 40)) 
 
@@ -98,5 +96,3 @@ plt.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
 plt.show()
-
-
